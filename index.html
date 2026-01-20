@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Generative AI Video Division | Strategic Framework</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --netflix-red: #E50914;
+            --netflix-red-dark: #B20710;
+            --netflix-black: #141414;
+            --netflix-dark: #1a1a1a;
+            --netflix-card: #222222;
+            --netflix-card-hover: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --text-muted: #808080;
+            --accent-gradient: linear-gradient(135deg, #E50914 0%, #B20710 100%);
+            --glass-bg: rgba(34, 34, 34, 0.8);
+            --border-subtle: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--netflix-black);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(229, 9, 20, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(229, 9, 20, 0.1) 0%, transparent 40%),
+                var(--netflix-black);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .netflix-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            letter-spacing: 0.05em;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 80px rgba(229, 9, 20, 0.5);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .hero-tagline {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 600;
+            max-width: 800px;
+            margin-bottom: 3rem;
+            background: linear-gradient(180deg, #fff 0%, #b3b3b3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--netflix-red);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        /* Vision Card */
+        .vision-card {
+            background: linear-gradient(135deg, var(--netflix-card) 0%, var(--netflix-dark) 100%);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vision-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-gradient);
+        }
+
+        .vision-text {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .vision-highlight {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .vision-contrast {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contrast-item {
+            flex: 1;
+            min-width: 250px;
+            padding: 1.5rem;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .contrast-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .contrast-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .contrast-item.from .contrast-value {
+            color: var(--text-secondary);
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .contrast-item.to .contrast-value {
+            color: var(--netflix-red);
+        }
+
+        /* Challenge Cards */
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .challenge-card {
+            background: var(--netflix-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .challenge-card:hover {
+            background: var(--netflix-card-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .challenge-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--netflix-red);
+            opacity: 0.3;
+            line-height: 1;
+        }
+
+        .challenge-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0.5rem 0 1rem;
+        }
+
+        .challenge-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .challenge-bullets {
+            margin-top: 1rem;
+            padding-left: 1rem;
+        }
+
+        .challenge-bullets li {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Architecture Diagram */
+        .architecture {
+            background: var(--netflix-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 2rem;
+            overflow-x: auto;
+        }
+
+        .arch-layer {
+            background: linear-gradient(90deg, rgba(229, 9, 20, 0.1) 0%, transparent 100%);
+            border: 1px solid var(--border-subtle);
+            border-left: 4px solid var(--netflix-red);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .arch-layer:hover {
+            background: linear-gradient(90deg, rgba(229, 9, 20, 0.2) 0%, transparent 100%);
+            transform: translateX(8px);
+        }
+
+        .arch-layer:last-child {
+            margin-bottom: 0;
+        }
+
+        .arch-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .arch-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--netflix-red);
+            border-radius: 50%;
+        }
+
+        .arch-details {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            padding-left: 1.5rem;
+        }
+
+        .arch-connector {
+            display: flex;
+            justify-content: center;
+            padding: 0.5rem 0;
+        }
+
+        .arch-connector svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--netflix-red);
+            opacity: 0.5;
+        }
+
+        /* Timeline / Phases */
+        .phases-container {
+            position: relative;
+        }
+
+        .phase-card {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            align-items: flex-start;
+        }
+
+        .phase-timeline {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 100px;
+        }
+
+        .phase-number {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            box-shadow: 0 0 30px rgba(229, 9, 20, 0.4);
+        }
+
+        .phase-line {
+            width: 2px;
+            flex: 1;
+            background: linear-gradient(180deg, var(--netflix-red) 0%, transparent 100%);
+            min-height: 40px;
+        }
+
+        .phase-content {
+            flex: 1;
+            background: var(--netflix-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .phase-duration {
+            display: inline-block;
+            background: rgba(229, 9, 20, 0.2);
+            color: var(--netflix-red);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .phase-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .phase-description {
+            color: var(--text-secondary);
+        }
+
+        .phase-features {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .phase-feature {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Strategic Grid */
+        .strategic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .strategic-card {
+            background: var(--netflix-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .strategic-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .strategic-card h4::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--netflix-red);
+            border-radius: 2px;
+        }
+
+        .strategic-list {
+            list-style: none;
+        }
+
+        .strategic-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .strategic-list li:last-child {
+            border-bottom: none;
+        }
+
+        .strategic-list li::before {
+            content: '→';
+            color: var(--netflix-red);
+            font-weight: bold;
+        }
+
+        /* Questions */
+        .questions-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .question-card {
+            background: var(--netflix-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            background: var(--netflix-card-hover);
+            border-color: var(--netflix-red);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .question-number {
+            width: 32px;
+            height: 32px;
+            background: rgba(229, 9, 20, 0.2);
+            color: var(--netflix-red);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .question-title {
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .question-detail {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Next Steps */
+        .next-steps {
+            background: linear-gradient(135deg, rgba(229, 9, 20, 0.1) 0%, var(--netflix-card) 100%);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 2.5rem;
+        }
+
+        .steps-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .step-item:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateX(8px);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 4rem;
+        }
+
+        .footer-meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-status {
+            display: inline-block;
+            background: rgba(229, 9, 20, 0.2);
+            color: var(--netflix-red);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .phase-card {
+                flex-direction: column;
+            }
+
+            .phase-timeline {
+                flex-direction: row;
+                min-width: auto;
+                width: 100%;
+            }
+
+            .phase-line {
+                width: auto;
+                height: 2px;
+                min-height: auto;
+                flex: 1;
+            }
+
+            .strategic-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .challenges-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="netflix-logo">NETFLIX</div>
+        <div class="hero-subtitle">Generative AI Video Division</div>
+        <h1 class="hero-tagline">From Catalog to Creation: Personalized Stories at Scale</h1>
+        <div class="scroll-indicator">
+            <span>Explore</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+            </svg>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Vision -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2 class="section-title">The Vision</h2>
+            </div>
+            <div class="vision-card">
+                <p class="vision-text">
+                    Generate <span class="vision-highlight">personalized series and films on-demand</span> based on individual viewer preferences, watch history, and real-time choices.
+                </p>
+                <div class="vision-contrast">
+                    <div class="contrast-item from">
+                        <div class="contrast-label">Current Model</div>
+                        <div class="contrast-value">Pick from what exists</div>
+                    </div>
+                    <div class="contrast-item to">
+                        <div class="contrast-label">Future Model</div>
+                        <div class="contrast-value">Create what you want</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Challenges -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2 class="section-title">Core Technical Challenges</h2>
+            </div>
+            <div class="challenges-grid">
+                <div class="challenge-card">
+                    <div class="challenge-number">01</div>
+                    <h3 class="challenge-title">Temporal Coherence</h3>
+                    <p class="challenge-description">Current video models struggle beyond ~10 seconds of coherent output. A film requires 90+ minutes of consistency.</p>
+                    <ul class="challenge-bullets">
+                        <li>Character consistency across scenes remains unsolved at scale</li>
+                        <li>Physics and environmental continuity</li>
+                        <li>Maintaining visual style throughout</li>
+                    </ul>
+                </div>
+                <div class="challenge-card">
+                    <div class="challenge-number">02</div>
+                    <h3 class="challenge-title">Narrative Structure</h3>
+                    <p class="challenge-description">Generative models lack understanding of story architecture and deliberate design.</p>
+                    <ul class="challenge-bullets">
+                        <li>Three-act structure and pacing</li>
+                        <li>Character arcs and development</li>
+                        <li>Risk: visually impressive but narratively empty</li>
+                    </ul>
+                </div>
+                <div class="challenge-card">
+                    <div class="challenge-number">03</div>
+                    <h3 class="challenge-title">Compute Economics</h3>
+                    <p class="challenge-description">Per-user generation at scale could dwarf current streaming infrastructure costs.</p>
+                    <ul class="challenge-bullets">
+                        <li>90 minutes of high-quality video is massive</li>
+                        <li>Need hybrid approaches</li>
+                        <li>Reusable assets, modular generation</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Architecture -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">🏗️</div>
+                <h2 class="section-title">Proposed Architecture</h2>
+            </div>
+            <div class="architecture">
+                <div class="arch-layer">
+                    <div class="arch-title">User Preference Engine</div>
+                    <div class="arch-details">Watch history, explicit preferences, real-time input</div>
+                </div>
+                <div class="arch-connector">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12l7 7 7-7"/>
+                    </svg>
+                </div>
+                <div class="arch-layer">
+                    <div class="arch-title">Narrative Engine</div>
+                    <div class="arch-details">Story structure generation (LLM-based) • Character profiles & arcs • Scene breakdown & shot planning</div>
+                </div>
+                <div class="arch-connector">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12l7 7 7-7"/>
+                    </svg>
+                </div>
+                <div class="arch-layer">
+                    <div class="arch-title">Asset Library</div>
+                    <div class="arch-details">Pre-generated character models • Environment templates • Music/sound design modules</div>
+                </div>
+                <div class="arch-connector">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12l7 7 7-7"/>
+                    </svg>
+                </div>
+                <div class="arch-layer">
+                    <div class="arch-title">Video Generation Pipeline</div>
+                    <div class="arch-details">Scene-by-scene rendering • Consistency enforcement (LoRA-style character locks) • Quality assurance passes</div>
+                </div>
+                <div class="arch-connector">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12l7 7 7-7"/>
+                    </svg>
+                </div>
+                <div class="arch-layer">
+                    <div class="arch-title">Delivery & Feedback</div>
+                    <div class="arch-details">Adaptive streaming • Real-time preference capture • Continuous model refinement</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phased Approach -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">📈</div>
+                <h2 class="section-title">Phased Approach</h2>
+            </div>
+            <div class="phases-container">
+                <div class="phase-card">
+                    <div class="phase-timeline">
+                        <div class="phase-number">1</div>
+                        <div class="phase-line"></div>
+                    </div>
+                    <div class="phase-content">
+                        <span class="phase-duration">6-12 months</span>
+                        <h3 class="phase-title">Interactive Shorts</h3>
+                        <p class="phase-description">5-15 minute personalized episodes with limited genre scope. Validates technical pipeline at smaller scale.</p>
+                        <div class="phase-features">
+                            <span class="phase-feature">Cozy mystery</span>
+                            <span class="phase-feature">Sci-fi shorts</span>
+                            <span class="phase-feature">Protagonist customization</span>
+                            <span class="phase-feature">Setting preferences</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase-card">
+                    <div class="phase-timeline">
+                        <div class="phase-number">2</div>
+                        <div class="phase-line"></div>
+                    </div>
+                    <div class="phase-content">
+                        <span class="phase-duration">12-24 months</span>
+                        <h3 class="phase-title">Episodic Series</h3>
+                        <p class="phase-description">30-minute episodes with character persistence. Branching narratives based on viewer choices.</p>
+                        <div class="phase-features">
+                            <span class="phase-feature">Character persistence</span>
+                            <span class="phase-feature">Branching narratives</span>
+                            <span class="phase-feature">"Your version" of shows</span>
+                            <span class="phase-feature">Same premise, personalized execution</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="phase-card">
+                    <div class="phase-timeline">
+                        <div class="phase-number">3</div>
+                    </div>
+                    <div class="phase-content">
+                        <span class="phase-duration">24-36 months</span>
+                        <h3 class="phase-title">Feature Films</h3>
+                        <p class="phase-description">Full-length personalized films with advanced narrative engines and emotional arc tracking.</p>
+                        <div class="phase-features">
+                            <span class="phase-feature">90+ minute films</span>
+                            <span class="phase-feature">Emotional arc tracking</span>
+                            <span class="phase-feature">User as character</span>
+                            <span class="phase-feature">Advanced personalization</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategic Considerations -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">♟️</div>
+                <h2 class="section-title">Strategic Considerations</h2>
+            </div>
+            <div class="strategic-grid">
+                <div class="strategic-card">
+                    <h4>Moat Building</h4>
+                    <ul class="strategic-list">
+                        <li>First-mover advantage in preference data + generation quality</li>
+                        <li>Proprietary character consistency technology</li>
+                        <li>Creator tools that attract talent to the platform</li>
+                    </ul>
+                </div>
+                <div class="strategic-card">
+                    <h4>Risk Factors</h4>
+                    <ul class="strategic-list">
+                        <li>Uncanny valley rejection by audiences</li>
+                        <li>Regulatory scrutiny (deepfakes, likeness rights)</li>
+                        <li>Creator community backlash (job displacement)</li>
+                        <li>Content that's "personal" but not "good"</li>
+                    </ul>
+                </div>
+                <div class="strategic-card">
+                    <h4>Competitive Landscape</h4>
+                    <ul class="strategic-list">
+                        <li>OpenAI Sora, Google Veo, Runway advancing rapidly</li>
+                        <li>Disney, Warner likely pursuing similar R&D</li>
+                        <li>Differentiation: Netflix has the preference data others lack</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Open Questions -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">❓</div>
+                <h2 class="section-title">Open Questions</h2>
+            </div>
+            <div class="questions-grid">
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">1</div>
+                        <h4 class="question-title">Quality vs. Personalization Tradeoff</h4>
+                    </div>
+                    <p class="question-detail">Is a perfectly-personalized mediocre film better than a universally-great one? Where's the sweet spot?</p>
+                </div>
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <h4 class="question-title">Creator Economics</h4>
+                    </div>
+                    <p class="question-detail">How do writers, directors, actors participate in generative content? New roles: "narrative architects," "style trainers," "consistency supervisors"?</p>
+                </div>
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">3</div>
+                        <h4 class="question-title">Cultural Impact</h4>
+                    </div>
+                    <p class="question-detail">Does personalized content fragment shared cultural moments? Netflix's "watercooler effect" disappears if everyone watches different content.</p>
+                </div>
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">4</div>
+                        <h4 class="question-title">Legal Framework</h4>
+                    </div>
+                    <p class="question-detail">Likeness rights for AI-generated faces. Copyright on procedurally generated narratives. Liability for generated content that causes harm.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Next Steps -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">🚀</div>
+                <h2 class="section-title">Recommended Next Steps</h2>
+            </div>
+            <div class="next-steps">
+                <div class="steps-list">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Technical POC</h4>
+                            <p>Build a 5-minute short generator with character consistency</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>User Research</h4>
+                            <p>Test appetite for personalized vs. curated content</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Legal Review</h4>
+                            <p>Map regulatory landscape across key markets</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Creator Summit</h4>
+                            <p>Engage talent early to shape collaborative models</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Competitive Intel</h4>
+                            <p>Deep dive on Sora, Veo, Runway capabilities</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-meta">Strategic Framework Document • January 2026</p>
+        <span class="footer-status">Initial Exploration</span>
+    </footer>
+</body>
+</html>

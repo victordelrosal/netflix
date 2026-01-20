@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix AI | Your Story</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --netflix-red: #E50914;
+            --netflix-red-glow: rgba(229, 9, 20, 0.6);
+            --bg-primary: #141414;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #222;
+            --text-primary: #fff;
+            --text-secondary: #b3b3b3;
+            --text-muted: #666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* TV-optimized: Large touch targets, readable from distance */
+
+        /* ===== SCREEN 1: HOME WITH CREATE OPTION ===== */
+        .screen {
+            display: none;
+            min-height: 100vh;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Netflix Header */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--netflix-red);
+            letter-spacing: 0.05em;
+        }
+
+        .nav-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+        }
+
+        /* Hero Billboard */
+        .billboard {
+            position: relative;
+            height: 85vh;
+            display: flex;
+            align-items: center;
+            padding: 0 4%;
+            background: linear-gradient(90deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%),
+                        linear-gradient(0deg, var(--bg-primary) 0%, transparent 20%),
+                        url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1920&q=80') center/cover;
+        }
+
+        .billboard-content {
+            max-width: 600px;
+        }
+
+        .billboard-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(90deg, var(--netflix-red), #ff4d4d);
+            padding: 0.5rem 1.25rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px var(--netflix-red-glow); }
+            50% { box-shadow: 0 0 40px var(--netflix-red-glow); }
+        }
+
+        .billboard-badge svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .billboard-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            line-height: 1;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 20px rgba(0,0,0,0.8);
+        }
+
+        .billboard-description {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 2rem;
+        }
+
+        .billboard-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+
+        .btn-primary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-secondary {
+            background: rgba(109, 109, 110, 0.7);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(109, 109, 110, 0.5);
+        }
+
+        .btn-create {
+            background: linear-gradient(90deg, var(--netflix-red), #ff3333);
+            color: white;
+            box-shadow: 0 0 30px var(--netflix-red-glow);
+        }
+
+        .btn-create:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px var(--netflix-red-glow);
+        }
+
+        .btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Content Rows */
+        .content-rows {
+            padding: 0 4% 4rem;
+            margin-top: -10vh;
+            position: relative;
+            z-index: 10;
+        }
+
+        .row {
+            margin-bottom: 3rem;
+        }
+
+        .row-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .row-title .ai-badge {
+            background: linear-gradient(90deg, var(--netflix-red), #ff4d4d);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .row-scroll {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            scrollbar-width: none;
+        }
+
+        .row-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .card {
+            flex-shrink: 0;
+            width: 300px;
+            aspect-ratio: 16/9;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Create Card - Special */
+        .card-create {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 2px dashed var(--netflix-red);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .card-create:hover {
+            border-style: solid;
+            background: linear-gradient(135deg, #222 0%, #333 100%);
+        }
+
+        .card-create svg {
+            width: 48px;
+            height: 48px;
+            color: var(--netflix-red);
+        }
+
+        .card-create span {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* ===== SCREEN 2: CREATE YOUR STORY ===== */
+        .create-screen {
+            min-height: 100vh;
+            background: var(--bg-primary);
+        }
+
+        .create-header {
+            padding: 6rem 4% 2rem;
+            text-align: center;
+        }
+
+        .create-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .create-header p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .create-steps {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem 4%;
+            margin-bottom: 2rem;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .step-indicator.active {
+            color: var(--text-primary);
+        }
+
+        .step-indicator.completed {
+            color: var(--netflix-red);
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .step-indicator.active .step-number {
+            background: var(--netflix-red);
+            border-color: var(--netflix-red);
+        }
+
+        .step-indicator.completed .step-number {
+            background: var(--netflix-red);
+            border-color: var(--netflix-red);
+        }
+
+        .step-line {
+            width: 60px;
+            height: 2px;
+            background: var(--text-muted);
+        }
+
+        /* Genre Selection */
+        .genre-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            padding: 0 4%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .genre-card {
+            aspect-ratio: 16/10;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .genre-card:hover {
+            transform: scale(1.03);
+            border-color: var(--netflix-red);
+        }
+
+        .genre-card.selected {
+            border-color: var(--netflix-red);
+            box-shadow: 0 0 30px var(--netflix-red-glow);
+        }
+
+        .genre-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .genre-card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 1.5rem 1.5rem;
+            background: linear-gradient(0deg, rgba(0,0,0,0.95) 0%, transparent 100%);
+        }
+
+        .genre-card h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .genre-card p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .genre-check {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 32px;
+            height: 32px;
+            background: var(--netflix-red);
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .genre-card.selected .genre-check {
+            display: flex;
+        }
+
+        .genre-check svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Navigation Buttons */
+        .create-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 3rem 4%;
+        }
+
+        /* ===== SCREEN 3: CUSTOMIZE CHARACTER ===== */
+        .customize-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            padding: 6rem 4% 4rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .character-preview {
+            position: relative;
+        }
+
+        .character-frame {
+            aspect-ratio: 3/4;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+        }
+
+        .character-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .character-frame::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 2px solid var(--netflix-red);
+            border-radius: 16px;
+            pointer-events: none;
+        }
+
+        .character-label {
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--netflix-red);
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .customize-options {
+            padding-top: 2rem;
+        }
+
+        .customize-options h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .customize-options > p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-group {
+            margin-bottom: 2rem;
+        }
+
+        .option-group label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .option-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .chip {
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border: 2px solid transparent;
+            border-radius: 30px;
+            font-size: 1rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chip:hover {
+            background: #333;
+        }
+
+        .chip.selected {
+            border-color: var(--netflix-red);
+            background: rgba(229, 9, 20, 0.2);
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: var(--bg-card);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: var(--netflix-red);
+        }
+
+        .text-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* ===== SCREEN 4: GENERATING ===== */
+        .generating-screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+            background:
+                radial-gradient(ellipse at center, rgba(229, 9, 20, 0.1) 0%, transparent 60%),
+                var(--bg-primary);
+        }
+
+        .generating-visual {
+            width: 400px;
+            height: 225px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 3rem;
+            box-shadow: 0 0 60px var(--netflix-red-glow);
+        }
+
+        .generating-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: imagePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes imagePulse {
+            0%, 100% { filter: brightness(0.8) saturate(0.8); }
+            50% { filter: brightness(1.2) saturate(1.2); }
+        }
+
+        .generating-visual::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.3), transparent);
+            animation: scanline 2s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .generating-text h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .generating-text p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            width: 400px;
+            height: 6px;
+            background: var(--bg-card);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--netflix-red), #ff4d4d);
+            border-radius: 3px;
+            width: 0%;
+            animation: progress 8s ease-out forwards;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            20% { width: 15%; }
+            40% { width: 35%; }
+            60% { width: 55%; }
+            80% { width: 75%; }
+            100% { width: 92%; }
+        }
+
+        .progress-label {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .generating-details {
+            margin-top: 3rem;
+            display: flex;
+            gap: 3rem;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-item .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--netflix-red);
+        }
+
+        .detail-item .label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* ===== SCREEN 5: READY TO WATCH ===== */
+        .ready-screen {
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .ready-backdrop {
+            position: absolute;
+            inset: 0;
+            background: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1920&q=80') center/cover;
+        }
+
+        .ready-backdrop::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.4) 100%);
+        }
+
+        .ready-content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+            padding: 4rem 4%;
+        }
+
+        .ready-info {
+            max-width: 700px;
+        }
+
+        .ready-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--netflix-red);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+        }
+
+        .ready-badge svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .ready-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 6rem;
+            line-height: 0.95;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 40px rgba(0,0,0,0.8);
+        }
+
+        .ready-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .ready-meta span {
+            color: var(--text-secondary);
+        }
+
+        .ready-meta .match {
+            color: #46d369;
+            font-weight: 600;
+        }
+
+        .ready-description {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .ready-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .ready-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .ready-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-play {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            font-size: 1.5rem;
+            padding: 1.25rem 3rem;
+        }
+
+        .btn-play svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .ready-personalized {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background: rgba(229, 9, 20, 0.1);
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            border-radius: 8px;
+        }
+
+        .ready-personalized h4 {
+            font-size: 1rem;
+            color: var(--netflix-red);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .ready-personalized p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Demo Controls */
+        .demo-controls {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(0,0,0,0.9);
+            padding: 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--border-subtle);
+            z-index: 1000;
+        }
+
+        .demo-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .demo-btn.active {
+            background: var(--netflix-red);
+            box-shadow: 0 0 10px var(--netflix-red-glow);
+        }
+
+        .demo-btn:hover {
+            background: var(--text-secondary);
+        }
+
+        /* Profile Avatar Placeholder */
+        .avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            background: linear-gradient(135deg, #e50914, #b20710);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- SCREEN 1: HOME -->
+    <div class="screen active" id="screen-home">
+        <nav class="nav">
+            <div class="nav-logo">NETFLIX</div>
+            <div class="nav-profile">
+                <div class="avatar-placeholder">V</div>
+            </div>
+        </nav>
+
+        <section class="billboard">
+            <div class="billboard-content">
+                <div class="billboard-badge">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    AI Generated • Just For You
+                </div>
+                <h1 class="billboard-title">CREATE YOUR<br>OWN STORY</h1>
+                <p class="billboard-description">Tell us what you want to watch. Our AI will craft a unique film or series made exclusively for you—your genres, your characters, your adventure.</p>
+                <div class="billboard-buttons">
+                    <button class="btn btn-create" onclick="showScreen('screen-create')">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        Create Your Story
+                    </button>
+                    <button class="btn btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        How It Works
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-rows">
+            <div class="row">
+                <h2 class="row-title">
+                    Your AI Creations
+                    <span class="ai-badge">Personalized</span>
+                </h2>
+                <div class="row-scroll">
+                    <div class="card card-create" onclick="showScreen('screen-create')">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        <span>Create New</span>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&q=80" alt="Previous creation">
+                        <div class="card-overlay">
+                            <div class="card-title">Echoes of Tomorrow</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1509248961895-40c44dc90763?w=600&q=80" alt="Previous creation">
+                        <div class="card-overlay">
+                            <div class="card-title">The Last Garden</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <h2 class="row-title">Popular on Netflix</h2>
+                <div class="row-scroll">
+                    <div class="card"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&q=80" alt="Show"></div>
+                    <div class="card"><img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600&q=80" alt="Show"></div>
+                    <div class="card"><img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600&q=80" alt="Show"></div>
+                    <div class="card"><img src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=600&q=80" alt="Show"></div>
+                    <div class="card"><img src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=600&q=80" alt="Show"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- SCREEN 2: CHOOSE GENRE -->
+    <div class="screen" id="screen-create">
+        <nav class="nav">
+            <div class="nav-logo">NETFLIX</div>
+            <div class="nav-profile">
+                <div class="avatar-placeholder">V</div>
+            </div>
+        </nav>
+
+        <div class="create-screen">
+            <div class="create-header">
+                <h1>What Kind of Story?</h1>
+                <p>Choose a genre to begin crafting your personalized experience</p>
+            </div>
+
+            <div class="create-steps">
+                <div class="step-indicator active">
+                    <div class="step-number">1</div>
+                    <span>Genre</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-indicator">
+                    <div class="step-number">2</div>
+                    <span>Character</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-indicator">
+                    <div class="step-number">3</div>
+                    <span>Details</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-indicator">
+                    <div class="step-number">4</div>
+                    <span>Create</span>
+                </div>
+            </div>
+
+            <div class="genre-grid">
+                <div class="genre-card" onclick="selectGenre(this)">
+                    <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&q=80" alt="Sci-Fi">
+                    <div class="genre-card-content">
+                        <h3>Sci-Fi</h3>
+                        <p>Explore distant futures and alien worlds</p>
+                    </div>
+                    <div class="genre-check">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    </div>
+                </div>
+                <div class="genre-card" onclick="selectGenre(this)">
+                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&q=80" alt="Thriller">
+                    <div class="genre-card-content">
+                        <h3>Thriller</h3>
+                        <p>Heart-pounding suspense and mystery</p>
+                    </div>
+                    <div class="genre-check">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    </div>
+                </div>
+                <div class="genre-card" onclick="selectGenre(this)">
+                    <img src="https://images.unsplash.com/photo-1509248961895-40c44dc90763?w=600&q=80" alt="Fantasy">
+                    <div class="genre-card-content">
+                        <h3>Fantasy</h3>
+                        <p>Magic, myth, and epic adventures</p>
+                    </div>
+                    <div class="genre-check">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    </div>
+                </div>
+                <div class="genre-card" onclick="selectGenre(this)">
+                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=600&q=80" alt="Romance">
+                    <div class="genre-card-content">
+                        <h3>Romance</h3>
+                        <p>Love stories that warm the heart</p>
+                    </div>
+                    <div class="genre-check">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    </div>
+                </div>
+                <div class="genre-card" onclick="selectGenre(this)">
+                    <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&q=80" alt="Drama">
+                    <div class="genre-card-content">
+                        <h3>Drama</h3>
+                        <p>Compelling human stories</p>
+                    </div>
+                    <div class="genre-check">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    </div>
+                </div>
+                <div class="genre-card" onclick="selectGenre(this)">
+                    <img src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=600&q=80" alt="Comedy">
+                    <div class="genre-card-content">
+                        <h3>Comedy</h3>
+                        <p>Laughs and feel-good moments</p>
+                    </div>
+                    <div class="genre-check">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="create-nav">
+                <button class="btn btn-secondary" onclick="showScreen('screen-home')">Back</button>
+                <button class="btn btn-create" onclick="showScreen('screen-customize')">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: CUSTOMIZE CHARACTER -->
+    <div class="screen" id="screen-customize">
+        <nav class="nav">
+            <div class="nav-logo">NETFLIX</div>
+            <div class="nav-profile">
+                <div class="avatar-placeholder">V</div>
+            </div>
+        </nav>
+
+        <div class="create-steps" style="padding-top: 6rem;">
+            <div class="step-indicator completed">
+                <div class="step-number">✓</div>
+                <span>Genre</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-indicator active">
+                <div class="step-number">2</div>
+                <span>Character</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-indicator">
+                <div class="step-number">3</div>
+                <span>Details</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-indicator">
+                <div class="step-number">4</div>
+                <span>Create</span>
+            </div>
+        </div>
+
+        <div class="customize-container">
+            <div class="character-preview">
+                <div class="character-frame">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Character Preview">
+                </div>
+                <div class="character-label">Your Protagonist</div>
+            </div>
+
+            <div class="customize-options">
+                <h2>Design Your Hero</h2>
+                <p>Customize the main character of your story</p>
+
+                <div class="option-group">
+                    <label>Character Archetype</label>
+                    <div class="option-chips">
+                        <div class="chip selected" onclick="selectChip(this)">Reluctant Hero</div>
+                        <div class="chip" onclick="selectChip(this)">Anti-Hero</div>
+                        <div class="chip" onclick="selectChip(this)">Chosen One</div>
+                        <div class="chip" onclick="selectChip(this)">Underdog</div>
+                        <div class="chip" onclick="selectChip(this)">Mentor Figure</div>
+                    </div>
+                </div>
+
+                <div class="option-group">
+                    <label>Setting Era</label>
+                    <div class="option-chips">
+                        <div class="chip" onclick="selectChip(this)">Near Future (2050s)</div>
+                        <div class="chip selected" onclick="selectChip(this)">Distant Future</div>
+                        <div class="chip" onclick="selectChip(this)">Alternate Present</div>
+                        <div class="chip" onclick="selectChip(this)">Post-Apocalyptic</div>
+                    </div>
+                </div>
+
+                <div class="option-group">
+                    <label>Tone & Mood</label>
+                    <div class="option-chips">
+                        <div class="chip" onclick="selectChip(this)">Dark & Gritty</div>
+                        <div class="chip selected" onclick="selectChip(this)">Hopeful</div>
+                        <div class="chip" onclick="selectChip(this)">Suspenseful</div>
+                        <div class="chip" onclick="selectChip(this)">Action-Packed</div>
+                        <div class="chip" onclick="selectChip(this)">Philosophical</div>
+                    </div>
+                </div>
+
+                <div class="option-group">
+                    <label>Anything specific you'd like to include?</label>
+                    <input type="text" class="text-input" placeholder="E.g., 'A twist ending', 'Set on a space station', 'Include a robot companion'...">
+                </div>
+
+                <div class="create-nav" style="padding: 2rem 0; justify-content: flex-start;">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-create')">Back</button>
+                    <button class="btn btn-create" onclick="showScreen('screen-generating')">Generate My Story</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 4: GENERATING -->
+    <div class="screen" id="screen-generating">
+        <nav class="nav">
+            <div class="nav-logo">NETFLIX</div>
+            <div class="nav-profile">
+                <div class="avatar-placeholder">V</div>
+            </div>
+        </nav>
+
+        <div class="generating-screen">
+            <div class="generating-visual">
+                <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&q=80" alt="Generating">
+            </div>
+
+            <div class="generating-text">
+                <h2>Creating Your Story</h2>
+                <p>Our AI is crafting a unique sci-fi adventure just for you...</p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="progress-label">Building narrative structure...</div>
+
+            <div class="generating-details">
+                <div class="detail-item">
+                    <div class="value">1:47:00</div>
+                    <div class="label">Runtime</div>
+                </div>
+                <div class="detail-item">
+                    <div class="value">142</div>
+                    <div class="label">Scenes</div>
+                </div>
+                <div class="detail-item">
+                    <div class="value">12</div>
+                    <div class="label">Characters</div>
+                </div>
+            </div>
+
+            <div class="create-nav" style="margin-top: 3rem;">
+                <button class="btn btn-create" onclick="showScreen('screen-ready')">Skip to Preview →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 5: READY TO WATCH -->
+    <div class="screen" id="screen-ready">
+        <nav class="nav">
+            <div class="nav-logo">NETFLIX</div>
+            <div class="nav-profile">
+                <div class="avatar-placeholder">V</div>
+            </div>
+        </nav>
+
+        <div class="ready-screen">
+            <div class="ready-backdrop"></div>
+            <div class="ready-content">
+                <div class="ready-info">
+                    <div class="ready-badge">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        Created For You
+                    </div>
+                    <h1 class="ready-title">ECHOES OF<br>TOMORROW</h1>
+                    <div class="ready-meta">
+                        <span class="match">98% Match</span>
+                        <span>2026</span>
+                        <span>1h 47m</span>
+                        <span>4K Ultra HD</span>
+                    </div>
+                    <p class="ready-description">
+                        In a distant future where humanity lives among the stars, a reluctant hero discovers a signal from Earth—a planet abandoned centuries ago. What she finds will challenge everything her civilization believes about their origins.
+                    </p>
+                    <div class="ready-tags">
+                        <span class="ready-tag">Sci-Fi</span>
+                        <span class="ready-tag">Hopeful</span>
+                        <span class="ready-tag">Space Exploration</span>
+                        <span class="ready-tag">Mystery</span>
+                    </div>
+                    <div class="ready-buttons">
+                        <button class="btn btn-play">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                            Play
+                        </button>
+                        <button class="btn btn-secondary">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                            My List
+                        </button>
+                        <button class="btn btn-secondary" onclick="showScreen('screen-customize')">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                            Remix
+                        </button>
+                    </div>
+
+                    <div class="ready-personalized">
+                        <h4>Why This Story Was Made For You</h4>
+                        <p>Based on your love for <strong>Interstellar</strong>, <strong>Arrival</strong>, and <strong>The Expanse</strong>, plus your preference for hopeful narratives and strong female protagonists.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Navigation -->
+    <div class="demo-controls">
+        <button class="demo-btn active" onclick="showScreen('screen-home')" title="Home"></button>
+        <button class="demo-btn" onclick="showScreen('screen-create')" title="Choose Genre"></button>
+        <button class="demo-btn" onclick="showScreen('screen-customize')" title="Customize"></button>
+        <button class="demo-btn" onclick="showScreen('screen-generating')" title="Generating"></button>
+        <button class="demo-btn" onclick="showScreen('screen-ready')" title="Ready"></button>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+
+            // Show selected screen
+            document.getElementById(screenId).classList.add('active');
+
+            // Update demo controls
+            const screens = ['screen-home', 'screen-create', 'screen-customize', 'screen-generating', 'screen-ready'];
+            document.querySelectorAll('.demo-btn').forEach((btn, index) => {
+                btn.classList.toggle('active', screens[index] === screenId);
+            });
+
+            // Reset progress animation for generating screen
+            if (screenId === 'screen-generating') {
+                const progressFill = document.querySelector('.progress-fill');
+                progressFill.style.animation = 'none';
+                progressFill.offsetHeight; // Trigger reflow
+                progressFill.style.animation = 'progress 8s ease-out forwards';
+            }
+        }
+
+        function selectGenre(element) {
+            document.querySelectorAll('.genre-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        function selectChip(element) {
+            const parent = element.parentElement;
+            parent.querySelectorAll('.chip').forEach(chip => {
+                chip.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        // Keyboard navigation for TV remote simulation
+        document.addEventListener('keydown', (e) => {
+            const screens = ['screen-home', 'screen-create', 'screen-customize', 'screen-generating', 'screen-ready'];
+            const currentIndex = screens.findIndex(id => document.getElementById(id).classList.contains('active'));
+
+            if (e.key === 'ArrowRight' && currentIndex < screens.length - 1) {
+                showScreen(screens[currentIndex + 1]);
+            } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                showScreen(screens[currentIndex - 1]);
+            }
+        });
+    </script>
+</body>
+</html>

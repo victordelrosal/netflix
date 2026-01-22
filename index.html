@@ -636,9 +636,75 @@
                 grid-template-columns: 1fr;
             }
         }
+        /* Main Navigation */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 4%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
+            backdrop-filter: blur(10px);
+        }
+
+        .main-nav .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--netflix-red);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-link.active {
+            color: var(--text-primary);
+            background: rgba(229, 9, 20, 0.2);
+        }
+
+        .nav-badge {
+            background: var(--accent-gradient);
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <a href="index.html" class="nav-logo">NETFLIX</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link active">Strategy</a>
+            <a href="poc-user-experience.html" class="nav-link">Experience</a>
+        </div>
+        <div class="nav-badge">AI Division</div>
+    </nav>
+
     <!-- Hero Section -->
     <section class="hero">
         <div class="netflix-logo">NETFLIX</div>

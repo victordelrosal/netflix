@@ -51,14 +51,14 @@
             to { opacity: 1; }
         }
 
-        /* Netflix Header */
+        /* Netflix Header - Internal screens (below main nav) */
         .nav {
             position: fixed;
-            top: 0;
+            top: 56px;
             left: 0;
             right: 0;
             z-index: 100;
-            padding: 1.5rem 4%;
+            padding: 1rem 4%;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -834,6 +834,63 @@
             font-size: 1rem;
         }
 
+        /* Main Navigation - Site-wide */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 4%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 50%, transparent 100%);
+            backdrop-filter: blur(10px);
+        }
+
+        .main-nav .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--netflix-red);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-link.active {
+            color: var(--text-primary);
+            background: rgba(229, 9, 20, 0.2);
+        }
+
+        .nav-badge {
+            background: linear-gradient(135deg, #E50914 0%, #B20710 100%);
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
         /* Demo Controls */
         .demo-controls {
             position: fixed;
@@ -883,6 +940,16 @@
     </style>
 </head>
 <body>
+    <!-- Main Site Navigation -->
+    <nav class="main-nav">
+        <a href="index.html" class="nav-logo">NETFLIX</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Strategy</a>
+            <a href="poc-user-experience.html" class="nav-link active">Experience</a>
+        </div>
+        <div class="nav-badge">AI Division</div>
+    </nav>
+
     <!-- SCREEN 1: HOME -->
     <div class="screen active" id="screen-home">
         <nav class="nav">

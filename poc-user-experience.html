@@ -892,6 +892,39 @@
             letter-spacing: 0.1em;
         }
 
+        /* Experience link pulse animation */
+        .nav-link-experience {
+            animation: experiencePulse 2s ease-in-out infinite;
+            position: relative;
+        }
+
+        .nav-link-experience::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, var(--netflix-red), #ff4d4d, var(--netflix-red));
+            opacity: 0;
+            z-index: -1;
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes experiencePulse {
+            0%, 100% {
+                transform: scale(1);
+                color: var(--text-primary);
+            }
+            50% {
+                transform: scale(1.05);
+                color: var(--netflix-red);
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.5; }
+        }
+
         /* Demo Controls */
         .demo-controls {
             position: fixed;
@@ -946,7 +979,7 @@
         <a href="index.html" class="nav-logo">NETFLIX</a>
         <div class="nav-links">
             <a href="index.html" class="nav-link">Strategy</a>
-            <a href="poc-user-experience.html" class="nav-link active">Experience</a>
+            <a href="poc-user-experience.html" class="nav-link nav-link-experience">Experience</a>
         </div>
         <div class="nav-badge">AI Division</div>
     </nav>
@@ -954,8 +987,7 @@
     <!-- SCREEN 1: HOME -->
     <div class="screen active" id="screen-home">
         <nav class="nav">
-            <div class="nav-logo">NETFLIX</div>
-            <div class="nav-profile">
+            <div class="nav-profile" style="margin-left: auto;">
                 <div class="avatar-placeholder">V</div>
             </div>
         </nav>
@@ -999,7 +1031,7 @@
                         </div>
                     </div>
                     <div class="card">
-                        <img src="https://images.unsplash.com/photo-1509248961895-40c44dc90763?w=600&q=80" alt="Previous creation">
+                        <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&q=80" alt="The Last Garden">
                         <div class="card-overlay">
                             <div class="card-title">The Last Garden</div>
                         </div>
@@ -1023,8 +1055,7 @@
     <!-- SCREEN 2: CHOOSE GENRE -->
     <div class="screen" id="screen-create">
         <nav class="nav">
-            <div class="nav-logo">NETFLIX</div>
-            <div class="nav-profile">
+            <div class="nav-profile" style="margin-left: auto;">
                 <div class="avatar-placeholder">V</div>
             </div>
         </nav>
@@ -1079,7 +1110,7 @@
                     </div>
                 </div>
                 <div class="genre-card" onclick="selectGenre(this)">
-                    <img src="https://images.unsplash.com/photo-1509248961895-40c44dc90763?w=600&q=80" alt="Fantasy">
+                    <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&q=80" alt="Fantasy">
                     <div class="genre-card-content">
                         <h3>Fantasy</h3>
                         <p>Magic, myth, and epic adventures</p>
@@ -1130,8 +1161,7 @@
     <!-- SCREEN 3: CUSTOMIZE CHARACTER -->
     <div class="screen" id="screen-customize">
         <nav class="nav">
-            <div class="nav-logo">NETFLIX</div>
-            <div class="nav-profile">
+            <div class="nav-profile" style="margin-left: auto;">
                 <div class="avatar-placeholder">V</div>
             </div>
         </nav>
@@ -1218,8 +1248,7 @@
     <!-- SCREEN 4: GENERATING -->
     <div class="screen" id="screen-generating">
         <nav class="nav">
-            <div class="nav-logo">NETFLIX</div>
-            <div class="nav-profile">
+            <div class="nav-profile" style="margin-left: auto;">
                 <div class="avatar-placeholder">V</div>
             </div>
         </nav>
@@ -1263,8 +1292,7 @@
     <!-- SCREEN 5: READY TO WATCH -->
     <div class="screen" id="screen-ready">
         <nav class="nav">
-            <div class="nav-logo">NETFLIX</div>
-            <div class="nav-profile">
+            <div class="nav-profile" style="margin-left: auto;">
                 <div class="avatar-placeholder">V</div>
             </div>
         </nav>
